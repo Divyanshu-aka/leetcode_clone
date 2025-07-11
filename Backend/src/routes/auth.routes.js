@@ -1,16 +1,27 @@
-import express from "express";
+import { Router } from "express";
 import {
-  register,
-  login,
-  logout,
-  check,
-} from "../controllers/auth.controllers.js";
+  registerUser,
+  verifyUserEmail,
+  resendVerificationEmail,
+  loginUser,
+} from "../controllers/auth.controller.js";
+import {
+  userRegisterationValidator,
+  userLoginValidator,
+} from "../validators/validator.js";
+import { validate } from "../middlewares/validator.middleware.js";
 
-const authRoutes = express.Router();
+const authRoutes = Router();
 
-authRoutes.post("/registerr", register);
-authRoutes.post("/login", login);
-authRoutes.post("/logout", logout);
-authRoutes.post("/check", check);
+authRoutes
+  .route("/register")
+  .post(
+    userRegisterationValidator() /**factory pattern */,
+    validate,
+    registerUser
+  );
+authRoutes.route("/verify/:token").get(verifyUserEmail);
+authRoutes.route("/resend").post(resendVerificationEmail);
+authRoutes.route("/login").post(userLoginValidator(), validate, loginUser);
 
 export default authRoutes;
