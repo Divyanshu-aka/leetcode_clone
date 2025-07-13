@@ -1,5 +1,10 @@
 import { db } from "../libs/db.js";
 import { asyncHandler } from "../utils/async-handler.js";
+import {
+  getJudge0LanguageId,
+  submitBatch,
+  pollBatchResults,
+} from "../libs/judge0.lib.js";
 
 export const createProblem = asyncHandler(async (req, res) => {
   const {
@@ -21,7 +26,7 @@ export const createProblem = asyncHandler(async (req, res) => {
   }
 
   try {
-    for (const [language, soltuionCode] of Object.entries(referenceSolutions)) {
+    for (const [language, solutionCode] of Object.entries(referenceSolutions)) {
       const languageId = getJudge0LanguageId(language);
 
       if (!languageId) {
@@ -31,7 +36,7 @@ export const createProblem = asyncHandler(async (req, res) => {
       }
 
       const submissions = testcases.map(({ input, output }) => ({
-        source_code: soltuionCode,
+        source_code: solutionCode,
         language_id: languageId,
         stdin: input,
         expected_output: output,
@@ -43,7 +48,7 @@ export const createProblem = asyncHandler(async (req, res) => {
 
       const results = await pollBatchResults(tokens);
 
-      for (let i = 0; i < results.lenght; i++) {
+      for (let i = 0; i < results.length; i++) {
         const result = results[i];
         console.log("Result-----", result);
         console.log(

@@ -43,7 +43,8 @@ model User {
   createdAt                    DateTime  @default(now())
   updatedAt                    DateTime  @updatedAt
 
-  problems Problem[] // Relation to Problem model
+  problems    Problem[] // Relation to Problem model
+  submissions Submission[] // Relation to Submission model
 }
 
 model Problem {
@@ -66,5 +67,27 @@ model Problem {
   updatedAt DateTime @updatedAt
 
   // Relations
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user       User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  submission Submission[] // Relation to Submission model
+}
+
+model Submission {
+  id            String  @id @default(uuid())
+  userId        String
+  problemId     String
+  sourceCode    Json
+  language      String
+  stdin         String?
+  stdout        String?
+  stderr        String?
+  compileOutput String?
+  status        String //Accepted, Wrong Answer, {Time Limit Exceeded, Runtime Error, Compilation Error}
+  memory        String?
+  time          String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  problem Problem @relation(fields: [problemId], references: [id], onDelete: Cascade)
 }

@@ -159,7 +159,10 @@ const loginUser = asyncHandler(async (req, res) => {
     { expiresIn: process.env.REFRESH_TOKEN_EXPIRY || "7d" }
   );
 
-  await db.user.update({
+  console.log("Access Token:", accessToken);
+  console.log("Refresh Token:", refreshToken);
+
+  const updated = await db.user.update({
     where: { id: user.id },
     data: { refreshToken },
   });
@@ -170,7 +173,7 @@ const loginUser = asyncHandler(async (req, res) => {
     maxAge: 24 * 60 * 60 * 1000, // 24 hrs
   });
 
-  console.log("Logged in user:", user.email);
+  console.log("Logged in user:", user.username, updated);
 
   res.json(
     new ApiResponse(200, {
@@ -189,25 +192,41 @@ const loginUser = asyncHandler(async (req, res) => {
   );
 });
 
-//logout user
-const logoutUser = asyncHandler(async (req, res) => {
-  const { refreshToken } = req.cookies;
+const profile = asyncHandler(async (req, res) => {
+  const user = await db.user.findUnique({
+    where: { id: req.user.id },
+    select: {
+      id: true,
+      image: true,
+      fullname: true,
+      username: true,
+      email: true,
+      role: true,
+    },
+  });
 
-  if (!refreshToken) {
-    return res.json(new ApiResponse(400, "No refresh token provided."));
-  }
-
-  const user = await User.findOne({ refreshToken });
   if (!user) {
-    return res.json(new ApiResponse(404, "User not found."));
+    return res.status(404).json(new ApiResponse(404, "User not found."));
   }
 
-  user.refreshToken = undefined; // Clear the refresh token
-  await user.save();
+  console.log("User profile:", user);
+
+  res
+    .status(200)
+    .json(new ApiResponse(200, user, "User profile fetched successfully."));
+});
+
+const logoutUser = asyncHandler(async (req, res) => {
+  const user = await db.user.update({
+    where: { id: req.user.id },
+    data: { refreshToken: null }, // Clear the refresh token
+  });
 
   res.clearCookie("refreshToken"); // Clear the cookie
 
-  res.json(new ApiResponse(200, "Logout successful."));
+  console.log("User logged out:", user);
+
+  res.status(200).json(new ApiResponse(200, "Logout successful."));
 });
 
 //resend verification email
@@ -269,4 +288,11 @@ const resendVerificationEmail = asyncHandler(async (req, res) => {
 //change current password
 //get current user
 
-export { registerUser, verifyUserEmail, loginUser, resendVerificationEmail };
+export {
+  registerUser,
+  verifyUserEmail,
+  loginUser,
+  profile,
+  logoutUser,
+  resendVerificationEmail,
+};
