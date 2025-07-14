@@ -43,8 +43,9 @@ model User {
   createdAt                    DateTime  @default(now())
   updatedAt                    DateTime  @updatedAt
 
-  problems    Problem[] // Relation to Problem model
-  submissions Submission[] // Relation to Submission model
+  problems      Problem[] // Relation to Problem model
+  submissions   Submission[] // Relation to Submission model
+  problemSolved ProblemSolved[] // Relation to ProblemSolved model
 }
 
 model Problem {
@@ -67,8 +68,10 @@ model Problem {
   updatedAt DateTime @updatedAt
 
   // Relations
-  user       User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   submission Submission[] // Relation to Submission model
+  solvedBy   ProblemSolved[] // Relation to ProblemSolved model
 }
 
 model Submission {
@@ -90,4 +93,41 @@ model Submission {
 
   user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
   problem Problem @relation(fields: [problemId], references: [id], onDelete: Cascade)
+
+  testcases TestCaseResult[] // Relation to TestCaseResult model
+}
+
+model TestCaseResult {
+  id             String  @id @default(uuid())
+  submissionId   String
+  testcase       Int
+  passes         Boolean
+  stdout         String?
+  expectedOutput String
+  stderr         String?
+  compileOutput  String?
+  status         String //Passed, Failed, Skipped
+  memory         String?
+  time           String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  submission Submission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+
+  @@index([submissionId])
+}
+
+model ProblemSolved {
+  id        String @id @default(uuid())
+  userId    String
+  problemId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  problem Problem @relation(fields: [problemId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, problemId]) // Ensure a user can only solve a problem once
 }
