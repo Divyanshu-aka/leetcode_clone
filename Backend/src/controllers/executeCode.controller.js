@@ -1,5 +1,6 @@
 import { submitBatch, pollBatchResults } from "../libs/judge0.lib.js";
 import { asyncHandler } from "../utils/async-handler.js";
+import { db } from "../libs/db.js";
 
 export const executeCode = asyncHandler(async (req, res) => {
   try {
