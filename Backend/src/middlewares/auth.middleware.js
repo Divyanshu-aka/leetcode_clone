@@ -2,13 +2,25 @@ import jwt from "jsonwebtoken";
 import { db } from "../libs/db.js";
 
 export const authMiddleware = async (req, res, next) => {
-  const token = req.headers.authorization?.split(" ")[1];
+  // const token = req.headers.authorization?.split(" ")[1];
+  const token = req.cookies?.refreshToken;
 
   if (!token) {
     return res.status(401).json({ message: "You are not logged in." });
   }
 
-  const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+  let decoded;
+  try {
+    decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+  } catch (error) {
+    if (error.name === "TokenExpiredError") {
+      return res.status(401).json({ message: "Access token has expired." });
+    } else if (error.name === "JsonWebTokenError") {
+      return res.status(401).json({ message: "Invalid Access token." });
+    } else {
+      return res.status(401).json({ message: "Token verification failed." });
+    }
+  }
 
   if (!decoded) {
     return res.status(401).json({ message: "Invalid Access token." });
