@@ -6,6 +6,7 @@ import {
   loginUser,
   profile,
   logoutUser,
+  check,
 } from "../controllers/auth.controller.js";
 import {
   userRegisterationValidator,
@@ -26,7 +27,8 @@ authRoutes
 authRoutes.route("/verify/:token").get(verifyUserEmail);
 authRoutes.route("/resend").post(resendVerificationEmail);
 authRoutes.route("/login").post(userLoginValidator(), validate, loginUser);
-authRoutes.route("/logout").get(authMiddleware, logoutUser);
+authRoutes.route("/logout").post(authMiddleware, logoutUser);
 authRoutes.route("/profile").get(authMiddleware, profile);
+authRoutes.route("/check").get(authMiddleware, check);
 
 export default authRoutes;

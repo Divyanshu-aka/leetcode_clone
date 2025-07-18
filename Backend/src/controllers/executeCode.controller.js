@@ -1,4 +1,9 @@
-import { submitBatch, pollBatchResults } from "../libs/judge0.lib.js";
+import {
+  submitBatch,
+  pollBatchResults,
+  getJudge0LanguageId,
+  getLanguageName,
+} from "../libs/judge0.lib.js";
 import { asyncHandler } from "../utils/async-handler.js";
 import { db } from "../libs/db.js";
 
@@ -113,10 +118,10 @@ export const executeCode = asyncHandler(async (req, res) => {
 
     const testCaseResults = detailedResults.map((result) => ({
       submissionId: submission.id,
-      testCase: result.testCase,
+      testcase: result.testCase,
       passed: result.passed,
       stdout: result.stdout,
-      expected: result.expected,
+      expectedOutput: result.expected,
       stderr: result.stderr,
       compileOutput: result.compile_output,
       status: result.status,
@@ -133,7 +138,7 @@ export const executeCode = asyncHandler(async (req, res) => {
         id: submission.id,
       },
       include: {
-        testCases: true,
+        testcases: true,
       },
     });
     //
