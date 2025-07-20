@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Link } from 'react-router-dom'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom' // Added useSearchParams
 import {
     Code,
     Eye,
@@ -13,19 +13,26 @@ import {
 
 import { z } from "zod";
 import AuthImagePattern from '../components/AuthImagePattern';
-import { useAuthStore } from '../store/useAuthStore';
-
+import { useAuthStore } from '../hooks/useAuthStore';
 
 const LoginSchema = z.object({
     email: z.string().email("Enter a valid email"),
     password: z.string().min(6, "Password must be atleast of 6 characters"),
-
 })
 
 const LoginPage = () => {
-
-    const { isLoggingIn, login } = useAuthStore()
+    const { isLoggingIn, login, authUser } = useAuthStore()
     const [showPassword, setShowPassword] = useState(false);
+    const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
+
+    useEffect(() => {
+        if (authUser) {
+            console.log("User authenticated, redirecting...");
+            const redirectUrl = searchParams.get("redirect") || "/";
+            navigate(redirectUrl, { replace: true });
+        }
+    }, [authUser, navigate, searchParams]);
 
     const {
         register,
@@ -37,10 +44,11 @@ const LoginPage = () => {
 
     const onSubmit = async (data) => {
         try {
-            await login(data)
-
+            console.log("Attempting login...");
+            await login(data);
+            console.log("Login completed");
         } catch (error) {
-            console.error("Signup failed", error)
+            console.error("Login failed", error);
         }
     }
 
@@ -62,9 +70,6 @@ const LoginPage = () => {
 
                     {/* Form */}
                     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-
-
-
 
                         {/* Email */}
                         <div className="form-control">

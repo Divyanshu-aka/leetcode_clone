@@ -31,6 +31,9 @@ export const useAuthStore = create((set) => ({
       set({ authUser: res.data.user });
 
       toast.success(res.data.message);
+
+      // Redirect to home page after successful signup
+      window.location.href = "/";
     } catch (error) {
       console.log("Error signing up", error);
       toast.error("Error signing up");
@@ -47,6 +50,9 @@ export const useAuthStore = create((set) => ({
       set({ authUser: res.data.user });
 
       toast.success(res.data.message);
+
+      // Redirect to home page after successful login
+      window.location.href = "/";
     } catch (error) {
       console.log("Error logging in", error);
       toast.error("Error logging in");

@@ -167,11 +167,31 @@ const loginUser = asyncHandler(async (req, res) => {
     data: { refreshToken },
   });
 
-  res.cookie("refreshToken", refreshToken, {
+  // ///////////
+  const cookieOptions = {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    maxAge: 24 * 60 * 60 * 1000, // 24 hrs
+    secure:
+      process.env.NODE_ENV === "production" ||
+      req.get("host")?.includes("devtunnels.ms") ||
+      req.get("host")?.includes("trycloudflare.com"),
+    sameSite:
+      req.get("host")?.includes("devtunnels.ms") ||
+      req.get("host")?.includes("trycloudflare.com")
+        ? "none"
+        : "lax",
+    path: "/", // Explicitly set path
+    domain: undefined, // Don't set domain for tunnels
+    maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+  };
+
+  res.cookie("refreshToken", refreshToken, cookieOptions);
+  res.cookie("accessToken", accessToken, {
+    ...cookieOptions,
+    httpOnly: false, // Allow frontend to read this
+    maxAge: 15 * 60 * 1000, // 15 minutes
   });
+  //
+  /////////////
 
   console.log("Logged in user:", user.username, updated);
 
@@ -222,7 +242,23 @@ const logoutUser = asyncHandler(async (req, res) => {
     data: { refreshToken: null }, // Clear the refresh token
   });
 
-  res.clearCookie("refreshToken"); // Clear the cookie
+  // Clear both cookies with same options as when they were set
+  const cookieOptions = {
+    secure:
+      process.env.NODE_ENV === "production" ||
+      req.get("host")?.includes("devtunnels.ms") ||
+      req.get("host")?.includes("trycloudflare.com"),
+    sameSite:
+      req.get("host")?.includes("devtunnels.ms") ||
+      req.get("host")?.includes("trycloudflare.com")
+        ? "none"
+        : "lax",
+    path: "/",
+    domain: undefined,
+  };
+
+  res.clearCookie("refreshToken", cookieOptions);
+  res.clearCookie("accessToken", cookieOptions);
 
   console.log("User logged out:", user);
 

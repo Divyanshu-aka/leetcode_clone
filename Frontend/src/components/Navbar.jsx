@@ -1,6 +1,6 @@
 import React from "react"
 import { User, Code, LogOut } from "lucide-react";
-import { useAuthStore } from "../store/useAuthStore";
+import { useAuthStore } from "../hooks/useAuthStore";
 import { Link } from "react-router-dom";
 import LogoutButton from "./LogoutButton";
 import react from "../assets/react.svg";

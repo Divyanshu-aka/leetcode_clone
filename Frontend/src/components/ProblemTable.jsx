@@ -1,11 +1,11 @@
 import React, { useState, useMemo } from "react";
-import { useAuthStore } from "../store/useAuthStore";
+import { useAuthStore } from "../hooks/useAuthStore";
 import { Link } from "react-router-dom";
 import { Bookmark, PencilIcon, Trash, TrashIcon, Plus } from "lucide-react";
-import { useActions } from "../store/useAction";
+import { useActions } from "../hooks/useAction";
 import AddToPlaylistModal from "./AddToPlaylist";
 import CreatePlaylistModal from "./CreatePlaylistModal";
-import { usePlaylistStore } from "../store/usePlaylistStore";
+import { usePlaylistStore } from "../hooks/usePlaylistStore";
 
 
 const ProblemsTable = ({ problems }) => {
@@ -165,10 +165,10 @@ const ProblemsTable = ({ problems }) => {
                                         <td>
                                             <span
                                                 className={`badge font-semibold text-xs text-white ${problem.difficulty === "EASY"
-                                                        ? "badge-success"
-                                                        : problem.difficulty === "MEDIUM"
-                                                            ? "badge-warning"
-                                                            : "badge-error"
+                                                    ? "badge-success"
+                                                    : problem.difficulty === "MEDIUM"
+                                                        ? "badge-warning"
+                                                        : "badge-error"
                                                     }`}
                                             >
                                                 {problem.difficulty}

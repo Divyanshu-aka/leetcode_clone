@@ -3,7 +3,8 @@ import { db } from "../libs/db.js";
 
 export const authMiddleware = async (req, res, next) => {
   // const token = req.headers.authorization?.split(" ")[1];
-  const token = req.cookies?.refreshToken;
+  // const token = req.cookies?.refreshToken;
+  const token = req.cookies?.accessToken; //temporary change to use accessToken cookie
 
   if (!token) {
     return res.status(401).json({ message: "You are not logged in." });

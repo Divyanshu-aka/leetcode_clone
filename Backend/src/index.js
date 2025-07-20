@@ -18,13 +18,47 @@ const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser());
+
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: [
+      "http://localhost:5173",
+      "https://fv1w1ts7-5173.inc1.devtunnels.ms",
+      "https://facility-separately-magnetic-preliminary.trycloudflare.com",
+    ],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: [
+      "Content-Type",
+      "Authorization",
+      "X-Requested-With",
+      "Accept",
+      "Origin",
+    ],
     credentials: true,
   })
 );
+
+// Add cookie parser with secure options for dev tunnels
+app.use(cookieParser());
+
+// Add this middleware to handle cookie settings for dev tunnels
+app.use((req, res, next) => {
+  // Set cookie options based on environment
+  const isDevTunnel = req.get("host")?.includes("devtunnels.ms");
+
+  if (isDevTunnel) {
+    res.cookie = (name, value, options = {}) => {
+      const cookieOptions = {
+        ...options,
+        sameSite: "none",
+        secure: true,
+        domain: undefined, // Don't set domain for dev tunnels
+      };
+      return res.cookie.call(res, name, value, cookieOptions);
+    };
+  }
+  next();
+});
 
 app.get("/", (req, res) => {
   res.send("hello......🥱🥱");

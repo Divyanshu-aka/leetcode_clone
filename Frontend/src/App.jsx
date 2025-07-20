@@ -5,7 +5,7 @@ import { Toaster } from "react-hot-toast";
 import HomePage from "./page/HomePage";
 import LoginPage from "./page/LoginPage";
 import SignUpPage from "./page/SingUpPage";
-import { useAuthStore } from "./store/useAuthStore";
+import { useAuthStore } from "./hooks/useAuthStore";
 import { Loader } from "lucide-react";
 import Layout from "./layout/Layout";
 import AdminRoute from "./components/AdminRoute";
