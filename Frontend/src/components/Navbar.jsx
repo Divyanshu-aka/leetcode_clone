@@ -1,25 +1,66 @@
 import React from "react"
 import { User, Code, LogOut } from "lucide-react";
 import { useAuthStore } from "../hooks/useAuthStore";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import LogoutButton from "./LogoutButton";
 import react from "../assets/react.svg";
+import vite from "../../public/vite.svg";
 
 
 
 const Navbar = () => {
-
+    const [scrolled, setScrolled] = useState(false);
+    const [scrollProgress, setScrollProgress] = useState(0);
     const { authUser } = useAuthStore()
+
+    useEffect(() => {
+        // Use a debounced handler to smooth out transitions
+        let timeoutId;
+        
+        const handleScroll = () => {
+            // Clear existing timeout
+            clearTimeout(timeoutId);
+            
+            // Set a small delay before updating the state to avoid rapid changes
+            timeoutId = setTimeout(() => {
+                const isScrolled = window.scrollY > 20;
+                if (isScrolled !== scrolled) {
+                    setScrolled(isScrolled);
+                }
+
+                // Calculate scroll progress percentage (for additional animations if needed)
+                const scrollTop = window.scrollY;
+                const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+                const progress = scrollTop / scrollHeight;
+                setScrollProgress(progress);
+            }, 10); // Small delay to avoid jerky transitions
+        };
+
+        window.addEventListener('scroll', handleScroll);
+        
+        // Initial check
+        handleScroll();
+        
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+            clearTimeout(timeoutId);
+        };
+    }, [scrolled]);
 
     console.log("AUTH_USER", authUser)
 
     return (
-        <nav className="sticky top-0 z-50 w-full py-5">
-            <div className="flex w-full justify-between mx-auto max-w-4xl bg-black/15 shadow-lg shadow-neutral-600/5 backdrop-blur-lg border border-gray-200/10 p-4 rounded-2xl">
+        <nav className="sticky top-0 z-50 px-4 py-2">
+            <div className={`flex justify-between h-16 max-w-7xl mx-auto px-6 py-3 backdrop-blur-md transition-all duration-300 ease-in-out rounded-full
+                ${scrolled
+                    ? 'border border-gray-500/30 shadow-lg bg-base-100/80 my-2 transform translate-y-1 hover:shadow-primary/20'
+                    : 'border-transparent bg-transparent'}
+            `}>
                 {/* Logo Section */}
                 <Link to="/" className="flex items-center gap-3 cursor-pointer">
-                    <img src="/leetlab.svg" className="h-18 w-18 bg-primary/20 text-primary border-none px-2 py-2 rounded-full" />
-                    <span className="text-lg md:text-2xl font-bold tracking-tight text-white hidden md:block">
+                    <img src={vite} className=" box-border bg-primary/20 text-primary border-none p-1 rounded-full" />
+                    <span className={`font-bold ${scrolled ? 'text-primary' : 'text-white'}`}>
                         Leetlab
                     </span>
                 </Link>
@@ -27,8 +68,9 @@ const Navbar = () => {
                 {/* User Profile and Dropdown */}
                 <div className="flex items-center gap-8">
                     <div className="dropdown dropdown-end">
-                        <label tabIndex={0} className="btn btn-ghost btn-circle avatar flex flex-row ">
-                            <div className="w-10 rounded-full ">
+                        <label tabIndex={0} className={`btn btn-circle avatar flex flex-row transition-all duration-300 ease-in-out
+                            ${scrolled ? 'btn-ghost' : 'btn-primary btn-outline'}`}>
+                            <div className="w-10 rounded-full">
                                 <img
                                     src={
                                         authUser?.image ||
@@ -38,7 +80,6 @@ const Navbar = () => {
                                     className="object-cover"
                                 />
                             </div>
-
                         </label>
                         <ul
                             tabIndex={0}
