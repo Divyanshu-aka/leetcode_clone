@@ -2,7 +2,7 @@ import React from "react"
 import { User, Code, LogOut } from "lucide-react";
 import { useAuthStore } from "../hooks/useAuthStore";
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import LogoutButton from "./LogoutButton";
 import react from "../assets/react.svg";
 import vite from "../../public/vite.svg";
@@ -12,7 +12,11 @@ import vite from "../../public/vite.svg";
 const Navbar = () => {
     const [scrolled, setScrolled] = useState(false);
     const [scrollProgress, setScrollProgress] = useState(0);
-    const { authUser } = useAuthStore()
+    const { authUser } = useAuthStore();
+    const location = useLocation();
+
+    // Check if current page is profile page
+    const isProfilePage = location.pathname === '/profile';
 
     useEffect(() => {
         // Use a debounced handler to smooth out transitions
@@ -54,7 +58,7 @@ const Navbar = () => {
         <nav className="sticky top-0 z-50 px-4 py-2">
             <div className={`flex justify-between h-16 max-w-7xl mx-auto px-6 py-3 backdrop-blur-md transition-all duration-300 ease-in-out rounded-full
                 ${scrolled
-                    ? 'border border-gray-500/30 shadow-lg bg-base-100/80 my-2 transform translate-y-1 hover:shadow-primary/20'
+                    ? `border border-gray-500/30 ${isProfilePage ? 'max-w-7xl' : 'max-w-[90%] sm:max-w-[85%] md:max-w-[80%]'} shadow-lg bg-base-100/80 my-2 transform translate-y-1 hover:shadow-primary/20`
                     : 'border-transparent bg-transparent'}
             `}>
                 {/* Logo Section */}
