@@ -11,6 +11,8 @@ import Layout from "./layout/Layout";
 import AdminRoute from "./components/AdminRoute";
 import AddProblem from "./page/AddProblem";
 import ProblemPage from "./page/ProblemPage";
+import LandingPage from "./page/LandingPage";
+import ProfilePage from "./page/ProfilePage";
 
 const App = () => {
   const { authUser, checkAuth, isCheckingAuth } = useAuthStore();
@@ -31,7 +33,18 @@ const App = () => {
     <div className="flex flex-col items-center justify-start ">
       <Toaster />
       <Routes>
-        <Route path="/" element={<Layout />}>
+
+        <Route
+          path="/"
+          element={<Layout />}>
+          <Route
+            index
+            element={!authUser ? <LandingPage /> : <Navigate to={"/home"} />}
+          />
+        </Route>
+        <Route
+          path="/home"
+          element={<Layout />}>
           <Route
             index
             element={authUser ? <HomePage /> : <Navigate to={"/login"} />}
@@ -40,12 +53,12 @@ const App = () => {
 
         <Route
           path="/login"
-          element={!authUser ? <LoginPage /> : <Navigate to={"/"} />}
+          element={!authUser ? <LoginPage /> : <Navigate to={"/home"} />}
         />
 
         <Route
           path="/signup"
-          element={!authUser ? <SignUpPage /> : <Navigate to={"/"} />}
+          element={!authUser ? <SignUpPage /> : <Navigate to={"/home"} />}
         />
 
         <Route
@@ -53,12 +66,23 @@ const App = () => {
           element={authUser ? <ProblemPage /> : <Navigate to={"/login"} />}
         />
 
-        <Route element={<AdminRoute />}>
+        <Route
+          path="/profile"
+          element={<Layout />}>
           <Route
-            path="/add-problem"
-            element={authUser ? <AddProblem /> : <Navigate to="/" />}
+            index
+            element={authUser ? <ProfilePage /> : <Navigate to={"/login"} />}
           />
         </Route>
+
+        <Route
+          element={<AdminRoute />}>
+          <Route
+            path="/add-problem"
+            element={authUser ? <AddProblem /> : <Navigate to={"/home"} />}
+          />
+        </Route>
+
       </Routes>
     </div>
   );
