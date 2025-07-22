@@ -17,11 +17,11 @@ const Navbar = () => {
     useEffect(() => {
         // Use a debounced handler to smooth out transitions
         let timeoutId;
-        
+
         const handleScroll = () => {
             // Clear existing timeout
             clearTimeout(timeoutId);
-            
+
             // Set a small delay before updating the state to avoid rapid changes
             timeoutId = setTimeout(() => {
                 const isScrolled = window.scrollY > 20;
@@ -38,10 +38,10 @@ const Navbar = () => {
         };
 
         window.addEventListener('scroll', handleScroll);
-        
+
         // Initial check
         handleScroll();
-        
+
         return () => {
             window.removeEventListener('scroll', handleScroll);
             clearTimeout(timeoutId);
