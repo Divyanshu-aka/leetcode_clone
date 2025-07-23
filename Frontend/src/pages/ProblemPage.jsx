@@ -17,10 +17,10 @@ import {
     Home,
 } from "lucide-react";
 import { Link, useParams } from "react-router-dom";
-import { useProblemStore } from "../hooks/useProblemStore";
+import { useProblemStore } from "../store/useProblemStore";
 import { getLanguageId } from "../lib/lang";
-import { useExecutionStore } from "../hooks/useExecutionStore";
-import { useSubmissionStore } from "../hooks/useSubmissionStore";
+import { useExecutionStore } from "../store/useExecutionStore";
+import { useSubmissionStore } from "../store/useSubmissionStore";
 import Submission from "../components/Submission";
 import SubmissionsList from "../components/SubmissionList";
 

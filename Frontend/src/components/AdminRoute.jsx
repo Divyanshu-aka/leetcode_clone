@@ -1,5 +1,5 @@
 import { Navigate, Outlet } from "react-router-dom";
-import { useAuthStore } from "../hooks/useAuthStore";
+import { useAuthStore } from "../store/useAuthStore";
 import { Loader } from "lucide-react";
 
 const AdminRoute = () => {
