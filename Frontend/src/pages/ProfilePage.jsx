@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { useAuthStore } from '../hooks/useAuthStore';
-import { useProblemStore } from '../hooks/useProblemStore';
-import { usePlaylistStore } from '../hooks/usePlaylistStore';
-import { useSubmissionStore } from '../hooks/useSubmissionStore';
+import { useAuthStore } from '../store/useAuthStore';
+import { useProblemStore } from '../store/useProblemStore';
+import { usePlaylistStore } from '../store/usePlaylistStore';
+import { useSubmissionStore } from '../store/useSubmissionStore';
 import { axiosInstance } from '../lib/axios';
 import { Link } from 'react-router-dom';
 import {

@@ -13,7 +13,7 @@ import {
 
 import { z } from "zod";
 import AuthImagePattern from '../components/AuthImagePattern';
-import { useAuthStore } from "../hooks/useAuthStore";
+import { useAuthStore } from "../store/useAuthStore";
 
 const SignUpSchema = z.object({
     email: z.string().email("Enter a valid email"),

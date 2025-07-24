@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 
-import { useProblemStore } from "../hooks/useProblemStore";
+import { useProblemStore } from "../store/useProblemStore";
 import { Loader } from "lucide-react";
 import ProblemTable from "../components/ProblemTable";
 

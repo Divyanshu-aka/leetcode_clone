@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { X, Plus, Loader } from 'lucide-react';
-import { usePlaylistStore } from '../hooks/usePlaylistStore';
+import { usePlaylistStore } from '../store/usePlaylistStore';
 
 const AddToPlaylistModal = ({ isOpen, onClose, problemId }) => {
     const { playlists, getAllPlaylists, addProblemToPlaylist, isLoading } = usePlaylistStore();
