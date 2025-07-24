@@ -4,7 +4,7 @@ import Navbar from '../components/Navbar'
 
 const Layout = () => {
     return (
-        <div>
+        <div className="w-full overflow-x-hidden">
             <Navbar />
             <Outlet />
         </div>

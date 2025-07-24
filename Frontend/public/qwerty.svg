@@ -1,0 +1,28 @@
+<svg width="530" height="210" viewBox="0 0 530 210" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="75" cy="45" r="30" fill="#DDF8FF" opacity="0.7"/>
+  <text font-family="Montserrat, Arial Black, Arial, sans-serif" x="45" y="160" font-size="130" font-weight="900" fill="#181B23">C</text>
+  <text font-family="Montserrat, Arial Black, Arial, sans-serif" x="155" y="160" font-size="130" font-weight="900" fill="#181B23">O</text>
+  <text font-family="Montserrat, Arial Black, Arial, sans-serif" x="260" y="160" font-size="130" font-weight="900" fill="#181B23">D</text>
+  <text font-family="Montserrat, Arial Black, Arial, sans-serif" x="365" y="160" font-size="130" font-weight="900" fill="#181B23">E</text>
+  <!-- Cyan and Green Accent Arcs -->
+  <path d="M158 90 A45 45 0 0 1 207 85" stroke="#19E2DB" stroke-width="15" fill="none"/>
+  <path d="M365 103 L418 77" stroke="#22D88D" stroke-width="13" stroke-linecap="square" />
+  <path d="M267 160 Q295 168 320 160" stroke="#1FA2FF" stroke-width="13" fill="none"/>
+  <!-- Microchip Icon -->
+  <g transform="translate(425 30)">
+    <rect x="0" y="0" width="55" height="55" rx="12" fill="#0E9D84"/>
+    <rect x="12" y="12" width="31" height="31" rx="7" fill="#16F0A6"/>
+    <text x="27" y="36" font-family="Arial" font-size="18" fill="#FFFFFF" font-weight="bold" text-anchor="middle">&lt;/&gt;</text>
+    <!-- Chip Pins -->
+    <rect x="25" y="-10" width="4" height="10" fill="#3EC1D3"/>
+    <rect x="25" y="55" width="4" height="10" fill="#3EC1D3"/>
+    <rect x="-10" y="25" width="10" height="4" fill="#3EC1D3"/>
+    <rect x="55" y="25" width="10" height="4" fill="#3EC1D3"/>
+    <rect x="7" y="-4" width="4" height="10" transform="rotate(-45 7 -4)" fill="#3EC1D3"/>
+    <rect x="44" y="-4" width="4" height="10" transform="rotate(45 44 -4)" fill="#3EC1D3"/>
+    <rect x="7" y="49" width="4" height="10" transform="rotate(45 7 49)" fill="#3EC1D3"/>
+    <rect x="44" y="49" width="4" height="10" transform="rotate(-400 44 49)" fill="#3EC1D3"/>
+  </g>
+  <!-- ".exe" text -->
+  <text font-family="Montserrat, Arial Black, Arial, sans-serif" x="425" y="195" font-size="52" fill="#181B23">.exe</text>
+</svg>
