@@ -3,14 +3,28 @@ import { Link } from 'react-router-dom'
 import { ArrowRight, ChevronDown, Code, Brain, Zap, Trophy, Users, CheckCircle, Play, CirclePlay, Circle, Terminal, GitBranch, Database, Hash, CornerDownRight, Heart, ExternalLink } from 'lucide-react'
 import Editor from '@monaco-editor/react'
 import { BackgroundElements } from '../components/Background'
+import AuthModal from '../components/AuthModal'
 
 const LandingPage = () => {
-    // Removed scroll and mouse position state
+    // State for auth modals
+    const [authModal, setAuthModal] = useState({ isOpen: false, mode: null })
+
+    // Refs for smooth scrolling
     const heroRef = useRef(null)
     const exploreRef = useRef(null)
     const questionsRef = useRef(null)
     const developersRef = useRef(null)
     const companiesRef = useRef(null)
+
+    // Function to open auth modal
+    const openAuthModal = (mode) => {
+        setAuthModal({ isOpen: true, mode });
+    }
+
+    // Function to close auth modal
+    const closeAuthModal = () => {
+        setAuthModal({ isOpen: false, mode: null });
+    }
 
     // Code samples for different languages in the Developer section
     const [selectedLanguage, setSelectedLanguage] = useState('cpp')
@@ -84,6 +98,12 @@ class Solution:
 
     return (
         <div className="bg-white text-black pt-10 w-full relative overflow-hidden">
+            {/* Auth Modals */}
+            <AuthModal
+                isOpen={authModal.isOpen}
+                onClose={closeAuthModal}
+                mode={authModal.mode}
+            />
 
             {/* Background elements */}
             <div className="fixed z-0 inset-0 overflow-hidden">
@@ -96,7 +116,7 @@ class Solution:
             {/* Hero Section */}
             <section
                 ref={heroRef}
-                className="relative px-[10%] min-h-[90vh] pt-10 flex items-center"
+                className="relative px-[10%] min-h-[90vh] pt-10 mb-10 flex items-center"
             >
                 <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-12 z-10 relative">
                     <div className="w-full md:w-1/2 order-2 md:order-1 animate-fade-in">
@@ -109,11 +129,19 @@ class Solution:
                             <span className='font-semibold'>CODE.exe</span> is your platform to master algorithms, ace technical interviews, and join a community of problem solvers pushing the boundaries of what's possible.
                         </p>
                         <div className="flex flex-wrap gap-5">
-                            <Link to="/signup" className="inline-flex items-center px-8 py-4 bg-black text-white font-medium rounded-lg hover:bg-gray-900 hover:scale-105 transition-all duration-300 shadow-lg">
+                            <button
+                                onClick={() => openAuthModal('signup')}
+                                className="inline-flex items-center px-8 py-4 bg-black text-white font-medium rounded-lg hover:bg-gray-900 hover:scale-105 transition-all duration-300 shadow-lg"
+                            >
                                 Create Account
                                 <ArrowRight className="ml-2 h-5 w-5" />
-                            </Link>
-
+                            </button>
+                            <button
+                                onClick={() => openAuthModal('login')}
+                                className="inline-flex items-center px-8 py-4 bg-transparent border border-gray-800 text-gray-800 font-medium rounded-lg hover:bg-gray-100 hover:scale-105 transition-all duration-300"
+                            >
+                                Login
+                            </button>
                         </div>
                     </div>
 
@@ -167,9 +195,9 @@ class Solution:
             {/* Explore Section */}
             <section
                 ref={exploreRef}
-                className="py-20 md:py-32 px-6 z-10 bg-white/50 backdrop-blur-sm relative"
+                className="py-20 md:py-20  px-6 z-10 bg-white/50 backdrop-blur-sm relative"
             >
-                <div className="max-w-7xl mx-auto relative z-10">
+                <div className="max-w-7xl  mx-auto relative z-10">
                     <div className="flex flex-col md:flex-row items-center gap-16">
                         <div className="w-full md:w-1/2 animate-fade-in">
                             <h2 className="text-4xl md:text-5xl font-bold mb-8 text-gray-800">
@@ -186,13 +214,13 @@ class Solution:
                             </div>
                         </div>
 
-                        <div className="w-full md:w-1/2 animate-float-slow">
+                        <div className="w-full md:w-120 animate-float-slow">
                             <div className="relative">
                                 <div className="absolute -top-6 -right-6 w-24 h-24 bg-blue-300 rounded-full opacity-70 animate-pulse"></div>
                                 <div className="absolute -bottom-6 -left-6 w-20 h-20 bg-green-300 rounded-lg transform rotate-45 opacity-70 animate-float"></div>
 
                                 {/* Exploration Visual */}
-                                <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-2xl p-8 border border-white/50">
+                                <div className="bg-white/90 h-120 backdrop-blur-sm rounded-2xl shadow-2xl p-8 border border-white/50">
                                     <div className="grid grid-cols-2 gap-6 mb-6">
                                         <div className="bg-gradient-to-br from-blue-50 to-indigo-100 p-6 rounded-xl text-center hover:scale-105 transition-all duration-300">
                                             <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-3">
@@ -219,9 +247,9 @@ class Solution:
                                             <div className="text-sm font-semibold text-purple-700">Achievement</div>
                                         </div>
                                     </div>
-                                    
+
                                     {/* Progress Chart Visual */}
-                                    <div className="bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl p-6 text-white">
+                                    <div className="bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl px-6 py-2 text-white">
                                         <div className="flex items-center justify-between mb-4">
                                             <span className="text-sm font-medium">Learning Progress</span>
                                             <span className="text-2xl font-bold">78%</span>

@@ -22,7 +22,7 @@ const SignUpSchema = z.object({
     username: z.string().min(3, "Username must be at least 3 characters long")
 })
 
-const SignUpPage = () => {
+const SignUpPage = ({ isModal = false, onSignupSuccess }) => {
 
     const [showPassword, setShowPassword] = useState(false);
 
@@ -40,6 +40,9 @@ const SignUpPage = () => {
         try {
             await signup(data)
             console.log("signup data", data)
+            if (isModal && onSignupSuccess) {
+                onSignupSuccess();
+            }
         } catch (error) {
             console.error("SignUp failed:", error);
         }
@@ -47,7 +50,7 @@ const SignUpPage = () => {
 
 
     return (
-        <div className='h-screen grid lg:grid-cols-2'>
+        <div className={isModal ? 'grid lg:grid-cols-2' : 'h-screen grid lg:grid-cols-2'}>
             <div className="flex flex-col justify-center items-center p-6 sm:p-12">
                 <div className="w-full max-w-md space-y-8">
                     {/* Logo */}

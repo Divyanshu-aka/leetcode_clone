@@ -20,7 +20,7 @@ const LoginSchema = z.object({
     password: z.string().min(6, "Password must be atleast of 6 characters"),
 })
 
-const LoginPage = () => {
+const LoginPage = ({ isModal = false, onLoginSuccess }) => {
     const { isLoggingIn, login, authUser } = useAuthStore()
     const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
@@ -29,10 +29,14 @@ const LoginPage = () => {
     useEffect(() => {
         if (authUser) {
             console.log("User authenticated, redirecting...");
-            const redirectUrl = searchParams.get("redirect") || "/";
-            navigate(redirectUrl, { replace: true });
+            if (isModal && onLoginSuccess) {
+                onLoginSuccess();
+            } else {
+                const redirectUrl = searchParams.get("redirect") || "/";
+                navigate(redirectUrl, { replace: true });
+            }
         }
-    }, [authUser, navigate, searchParams]);
+    }, [authUser, navigate, searchParams, isModal, onLoginSuccess]);
 
     const {
         register,
@@ -54,7 +58,7 @@ const LoginPage = () => {
 
 
     return (
-        <div className='h-screen grid lg:grid-cols-2'>
+        <div className={isModal ? 'grid lg:grid-cols-2' : 'h-screen grid lg:grid-cols-2'}>
             <div className="flex flex-col justify-center items-center p-6 sm:p-12">
                 <div className="w-full max-w-md space-y-8">
                     {/* Logo */}
